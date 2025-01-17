@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools==75.1.0"]
+build-backend = "setuptools.build_meta"
+
+# Per-service tests in CI, local py.test and local docker-compose
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--showlocals -rxs -v --strict-markers"
+markers = [
+    "unit: Fast unit and math algorithm tests",
+    "component: Component tests (require a real infrastructure)",
+]
+norecursedirs = ".git __pycache__ .pyc .* config data docs extras notebooks"
+
+[tool.uv.pip]
+link-mode = "copy"
+
+[project]
+# Core packaging metadata, useful for picking the right version of the AST parser
+# See https://packaging.python.org/en/latest/specifications/core-metadata/#requires-python
+requires-python = ">=3.11"
+name = "layoutlmv-attn-benchmark"
+version = "0.0.1"
+readme = "README.md"
+dependencies = [
+    "lightning==2.2.1",
+    "torch==2.4.1",
+    "transformers @ git+https://github.com/stancld/transformers.git@78533145ba4b12f2e0d2fb6119f47fb7c409df69",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "uv",
+]
+
+[project.urls]
+Repository = "https://github.com/stancld/layoutlmv-attn-benchmark"
+
+[tool.setuptools]
+packages = ["layoutlmv_attn_benchmark"]
