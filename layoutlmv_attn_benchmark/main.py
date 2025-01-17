@@ -16,6 +16,13 @@ from layoutlmv_attn_benchmark.training_module import TrainingModule
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
+def int_or_str(value: int | str) -> int | str:
+    try:
+        return int(value)
+    except ValueError:
+        return str(value)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--attn_impl", type=str, choices=["eager", "sdpa"], default="eager")
@@ -25,6 +32,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--num_classes", type=int, default=10)
     parser.add_argument("--num_workers", type=int, default=4)
     parser.add_argument("--num_samples", type=int, default=10000)
+    parser.add_argument(
+        "--precision", type=int_or_str, choices=[16, 32, "bf16", "bf16-mixed"], default=32
+    )
 
     return parser.parse_args()
 
@@ -54,7 +64,7 @@ def main(args: argparse.Namespace) -> None:
 
     training_module = TrainingModule(model)
 
-    trainer = pl.Trainer(max_epochs=1)
+    trainer = pl.Trainer(max_epochs=1, precision=args.precision)
     trainer.fit(training_module, train_dataloaders=loader)
 
 
