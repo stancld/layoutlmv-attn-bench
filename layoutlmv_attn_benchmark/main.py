@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import logging
 
 import lightning.pytorch as pl
 import torch
@@ -11,6 +12,8 @@ from transformers import LayoutLMv3Config, LayoutLMv3ForTokenClassification
 
 from layoutlmv_attn_benchmark.data import BenchmarkData
 from layoutlmv_attn_benchmark.training_module import TrainingModule
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
 def parse_args() -> argparse.Namespace:
@@ -27,6 +30,11 @@ def parse_args() -> argparse.Namespace:
 
 
 def main(args: argparse.Namespace) -> None:
+    # Log the parsed arguments
+    logging.info("Parsed arguments:")
+    for arg, value in vars(args).items():
+        logging.info(f"  {arg}: {value}")
+
     model_config = LayoutLMv3Config.from_pretrained(args.model_name)
     # Enforce turned off attention bias as it's not supported by SDPA
     model_config.has_relative_attention_bias = model_config.has_spatial_attention_bias = False
