@@ -23,7 +23,7 @@ name = "layoutlmv-attn-benchmark"
 version = "0.0.1"
 readme = "README.md"
 dependencies = [
-    "lightning==2.2.1",
+    "lightning==2.5.0.post0",
     "torch==2.4.1",
     "transformers @ git+https://github.com/stancld/transformers.git@78533145ba4b12f2e0d2fb6119f47fb7c409df69",
 ]
