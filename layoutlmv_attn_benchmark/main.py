@@ -51,8 +51,14 @@ def main(args: argparse.Namespace) -> None:
     # Explicitly define attention implementation
     model_config._attn_implementation = args.attn_impl
     model_config.num_labels = args.num_classes
+    # Adjust model max position embeddings to enable process longer sequences
+    model_config.max_position_embeddings = max(
+        model_config.max_position_embeddings, args.max_length + 2
+    )
 
-    model = LayoutLMv3ForTokenClassification.from_pretrained(args.model_name, config=model_config)
+    model = LayoutLMv3ForTokenClassification.from_pretrained(
+        args.model_name, config=model_config, ignore_mismatched_sizes=True
+    )
 
     loader = torch.utils.data.DataLoader(
         BenchmarkData(
