@@ -25,7 +25,7 @@ readme = "README.md"
 dependencies = [
     "lightning==2.5.0.post0",
     "torch==2.4.1",
-    "transformers @ git+https://github.com/stancld/transformers.git@78533145ba4b12f2e0d2fb6119f47fb7c409df69",
+    "transformers @ git+https://github.com/stancld/transformers.git@b01d58fbf6340c1371d997db3757379b17c16ea5",
 ]
 
 [project.optional-dependencies]
